@@ -14,7 +14,5 @@ $users = [
 ]
 
 node 'webappsec' {
-    file { "/opt/downloads":
-        ensure => "directory",
-    }
+    include dvwa
 }
