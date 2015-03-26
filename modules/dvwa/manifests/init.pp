@@ -21,12 +21,14 @@ class dvwa {
     # Download the Damn Vulnerable Web App
     exec {'wget-dvwa':
         command => "wget ${dvwa_url} --directory-prefix=${download_dir}",
+        path    => '/usr/bin', 
         creates => "${download_dir}/${dvwa_zip}",
         require => File[$download_dir],
     }
 
     exec {'unzip-dvwa':
         command => "unzip -d ${download_dir} ${download_dir}/${dvwa_zip}",
+        path    => '/usr/bin',
         creates => $dvwa_dir,
         require => Exec['wget-dvwa'],
     }
