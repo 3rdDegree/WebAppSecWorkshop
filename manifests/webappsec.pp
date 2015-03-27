@@ -16,4 +16,6 @@ $users = [
 node 'webappsec' {
     include apt
     include dvwa
+
+    dvwa::user { $users: }
 }
