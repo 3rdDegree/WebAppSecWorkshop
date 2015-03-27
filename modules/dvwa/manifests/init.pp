@@ -15,7 +15,8 @@ class dvwa {
     # File/directory names
     $dvwa_ver = '1.0.8'
     $dvwa_zip = "v${dvwa_ver}.zip"
-    $dvwa_dir = "${download_dir}/DVWA-${dvwa_ver}"
+    $dvwa_dir = "DVWA-${dvwa_ver}"
+    $dvwa_path = "${download_dir}/${dvwa_dir}"
     $dvwa_url = "https://github.com/RandomStorm/DVWA/archive/${dvwa_zip}"
 
     # Download the Damn Vulnerable Web App
@@ -29,7 +30,7 @@ class dvwa {
     exec {'unzip-dvwa':
         command => "unzip -d ${download_dir} ${download_dir}/${dvwa_zip}",
         path    => '/usr/bin',
-        creates => $dvwa_dir,
+        creates => $dvwa_path,
         require => Exec['wget-dvwa'],
     }
 
