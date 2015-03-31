@@ -15,6 +15,7 @@ $users = [
 
 node 'webappsec' {
     include apt
+    include apache::server
     include mysql::server
 
     include dvwa
