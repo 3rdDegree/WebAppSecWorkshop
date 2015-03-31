@@ -23,3 +23,6 @@ node 'webappsec' {
     dvwa::user { $users: }
     dvwa::db   { $users: }
 }
+
+# Make Package resources dependant on apt-get update
+Class['apt'] -> Package <| provider == apt |>
