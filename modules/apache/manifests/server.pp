@@ -1,5 +1,8 @@
 class apache::server {
-    package { "apache2":
+
+    $web_pkgs = ["apache2", "php5", "libapache2-mod-php5"]
+
+    package { $web_pkgs:
         ensure => installed,
     }
 
@@ -8,6 +11,6 @@ class apache::server {
         enable     => true,
         hasstatus  => true,
         hasrestart => true,
-        require    => Package["apache2"],
+        require    => Package[$web_pkgs],
     }
 }
