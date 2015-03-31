@@ -1,7 +1,7 @@
 define dvwa::db($user = $name) {
     require mysql::server
 
-    $schema = "$user_db"
+    $schema = "${user}_db"
     $password = 'webappsec'
 
     exec { "$name-schema":
