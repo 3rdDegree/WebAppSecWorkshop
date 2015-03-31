@@ -20,4 +20,5 @@ node 'webappsec' {
     include dvwa
 
     dvwa::user { $users: }
+    dvwa::db   { $users: }
 }
