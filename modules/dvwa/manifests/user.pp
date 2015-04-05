@@ -9,6 +9,7 @@ define dvwa::user {
         managehome => true,
         groups     => "www-data",
         password   => "webappsec",
+        shell      => "/bin/bash",
     }
 
     file {"/home/${name}/${dvwa::dvwa_dir}":
