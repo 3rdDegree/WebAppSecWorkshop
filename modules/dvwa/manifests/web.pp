@@ -1,7 +1,8 @@
 define dvwa::web($users) {
 
     # Disable default website
-    exec { "/usr/sbin/a2dissite default":
+    exec { 'disable-default-site':
+        command => '/usr/sbin/a2dissite default',
         onlyif  => "/usr/bin/test -f /etc/apache2/sites-enabled/default",
     }
 
@@ -20,7 +21,7 @@ define dvwa::web($users) {
     exec { "/usr/sbin/a2ensite ${site_name}":
         unless  => "/usr/bin/test -f /etc/apache2/sites-enabled/${site_name}",
         notify  => Service['apache2'],
-        require => File['dvwa-site'],
+        require => [ File['dvwa-site'], Exec['disable-default-site'] ],
     }
 }
 
