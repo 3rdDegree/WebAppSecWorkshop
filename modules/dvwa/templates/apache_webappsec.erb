@@ -1,0 +1,17 @@
+<VirtualHost *:80>
+    ServerAdmin 3rddegree@localhost
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    LogLevel warn
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+    <% @users.each do |user| -%>
+    Alias /<%= user %>/ "/home/<%= user %>/<%= scope.lookupvar('dvwa::dvwa_dir') %>/"
+    <Directory "/home/<%= user %>/<%= scope.lookupvar('dvwa::dvwa_dir') %>/">
+        Options Indexes MultiViews
+        AllowOverride None
+	    Order allow,deny
+	    allow from all
+    </Directory>
+
+    <% end -%>
+</VirtualHost>
