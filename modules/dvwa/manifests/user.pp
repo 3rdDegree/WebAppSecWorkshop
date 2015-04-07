@@ -52,4 +52,13 @@ define dvwa::user {
         notify  => Service['apache2'],
         require => Exec["$name-unzip-dvwa"],
     }
+
+    # Run the DVWA Database Setup script
+    $setup_output = "/tmp/setup_${name}.txt"
+    exec {"${name}-setup-dvwa-db":
+        command => "wget http://localhost/${name}/setup.php -q --post-data=create_db=1 --output-document=${setup_output}",
+        path    => '/usr/bin',
+        creates => $setup_output,
+        require => [Service['apache2'], Service['mysql'], File["/home/${name}/${dvwa::dvwa_dir}"]],
+    }
 }
