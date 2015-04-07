@@ -61,4 +61,15 @@ define dvwa::user {
         creates => $setup_output,
         require => [Service['apache2'], Service['mysql'], File["/home/${name}/${dvwa::dvwa_dir}"]],
     }
+
+    $schema = "${name}_db"
+
+    # Add an account for this user in the DVWA database
+    exec { "${name}-dvwa-login":
+        command => "mysql -uroot -D ${schema} -e \"insert into users \
+                        (first_name, last_name, user, password) \
+                        values('${name}', '${name}', '${name}', '4d06a78774eebd9d28d3996cbf35e9c3');\"",
+        path    => "/usr/bin/",
+        require => Exec["${name}-setup-dvwa-db"],
+    }
 }
