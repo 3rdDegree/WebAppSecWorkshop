@@ -26,4 +26,4 @@ node 'webappsec' {
 }
 
 # Make Package resources dependant on apt-get update
-Class['apt'] -> Package <| provider == apt |>
+Class['apt'] -> Package <| |>
