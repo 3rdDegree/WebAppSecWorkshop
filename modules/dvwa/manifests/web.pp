@@ -3,7 +3,7 @@ define dvwa::web($users) {
     # Disable default website
     exec { 'disable-default-site':
         command => '/usr/sbin/a2dissite default',
-        onlyif  => "/usr/bin/test -f /etc/apache2/sites-enabled/default",
+        onlyif  => "/usr/bin/test -f /etc/apache2/sites-enabled/000-default",
     }
 
     # Install the site config file
