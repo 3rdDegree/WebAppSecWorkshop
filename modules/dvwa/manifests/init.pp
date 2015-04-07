@@ -26,12 +26,4 @@ class dvwa {
         creates => "${download_dir}/${dvwa_zip}",
         require => File[$download_dir],
     }
-
-    exec {'unzip-dvwa':
-        command => "unzip -d ${download_dir} ${download_dir}/${dvwa_zip}",
-        path    => '/usr/bin',
-        creates => $dvwa_path,
-        require => Exec['wget-dvwa'],
-    }
-
 }
