@@ -87,4 +87,13 @@ define dvwa::user {
         path    => "/usr/bin/",
         require => Exec["${name}-setup-dvwa-db"],
     }
+
+    # Fixup paths to avatars
+    exec { "${name}-dvwa-avatar":
+        command => "mysql -uroot -D ${schema} -e \"update users \
+                        set avatar = REPLACE(avatar, 'dvwa/', '/${name}/') \
+                        where avatar like 'dvwa/%';\"",
+        path    => "/usr/bin/",
+        require => Exec["${name}-dvwa-login"],
+    }
 }
