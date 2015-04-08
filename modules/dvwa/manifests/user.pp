@@ -12,6 +12,13 @@ define dvwa::user {
         shell      => "/bin/bash",
     }
 
+    # Fix VI arrow keys when in insert mode
+    file {"/home/$name/.vimrc":
+        ensure  => present,
+        content => "set nocompatible",
+        require => User[$name],
+    }
+
     exec {"$name-unzip-dvwa":
         command => "unzip -d /home/${name}/ ${dvwa::download_dir}/${dvwa::dvwa_zip}",
         path    => '/usr/bin',
