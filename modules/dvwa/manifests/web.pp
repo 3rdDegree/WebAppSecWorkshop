@@ -23,5 +23,14 @@ define dvwa::web($users) {
         notify  => Service['apache2'],
         require => [ File['dvwa-site'], Exec['disable-default-site'] ],
     }
+
+    # Change php.ini settings
+    $php_ini = '/etc/php5/apache2/php.ini'
+    exec {"sed -i\'\' \'s/allow_url_include = Off/allow_url_include = On/\' $php_ini":
+        path    => '/bin',
+        onlyif  => "grep \"allow_url_include = Off\" $php_ini",
+        notify  => Service['apache2'],
+        require => Package["php5"],
+    }
 }
 
