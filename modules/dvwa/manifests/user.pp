@@ -44,9 +44,11 @@ define dvwa::user {
 
     $dvwa_config = "/home/${name}/${dvwa::dvwa_dir}/config/config.inc.php"
 
+    $schema = "${name}_db"
+
     # Set DVWA database name
     exec {"${name}-config-dbname":
-        command => "sed -i\'\' \'s/dvwa/${name}_db/\' $dvwa_config",
+        command => "sed -i\'\' \'s/dvwa/${schema}/\' $dvwa_config",
         path    => '/bin',
         onlyif  => "grep dvwa $dvwa_config",
         #notify  => Service['apache2'],
@@ -85,8 +87,6 @@ define dvwa::user {
                     Exec["${name}-config-dbpass"]
         ]
     }
-
-    $schema = "${name}_db"
 
     # Add an account for this user in the DVWA database
     exec { "${name}-dvwa-login":
