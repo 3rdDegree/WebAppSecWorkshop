@@ -27,6 +27,14 @@ define dvwa::user {
         require => Exec["$name-unzip-dvwa"],
     }
 
+    # Make upload dir world writeable
+    file {"$name-dvwa-upload":
+        path    => "/home/${name}/${dvwa::dvwa_dir}/hackable/uploads/",
+        recurse => true,
+        mode    => 0777,
+        require => Exec["$name-unzip-dvwa"],
+    }
+
     $dvwa_config = "/home/${name}/${dvwa::dvwa_dir}/config/config.inc.php"
 
     # Set DVWA database name
