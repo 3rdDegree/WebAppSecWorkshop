@@ -45,7 +45,8 @@ define dvwa::user {
     $dvwa_config = "/home/${name}/${dvwa::dvwa_dir}/config/config.inc.php"
 
     # Set DVWA database name
-    exec {"sed -i\'\' \'s/dvwa/${name}_db/\' $dvwa_config":
+    exec {"${name}-config-dbname":
+        command => "sed -i\'\' \'s/dvwa/${name}_db/\' $dvwa_config",
         path    => '/bin',
         onlyif  => "grep dvwa $dvwa_config",
         #notify  => Service['apache2'],
@@ -53,7 +54,8 @@ define dvwa::user {
     }
 
     # Set DVWA database user
-    exec {"sed -i\'\' \'s/root/${name}/\' $dvwa_config":
+    exec {"${name}-config-dbuser":
+        command => "sed -i\'\' \'s/root/${name}/\' $dvwa_config",
         path    => '/bin',
         onlyif  => "grep root $dvwa_config",
         notify  => Service['apache2'],
@@ -61,7 +63,8 @@ define dvwa::user {
     }
 
     # Set DVWA database password
-    exec {"sed -i\'\' \'s/p@ssw0rd/webappsec/\' $dvwa_config":
+    exec {"${name}-config-dbpass":
+        command => "sed -i\'\' \'s/p@ssw0rd/webappsec/\' $dvwa_config",
         path    => '/bin',
         onlyif  => "grep p@ssw0rd $dvwa_config",
         notify  => Service['apache2'],
@@ -74,7 +77,13 @@ define dvwa::user {
         command => "wget http://localhost/${name}/setup.php -q --post-data=create_db=1 --output-document=${setup_output}",
         path    => '/usr/bin',
         creates => $setup_output,
-        require => [Service['apache2'], Service['mysql'], File["/home/${name}/${dvwa::dvwa_dir}"]],
+        require => [Service['apache2'],
+                    Service['mysql'],
+                    File["/home/${name}/${dvwa::dvwa_dir}"],
+                    Exec["${name}-config-dbname"],
+                    Exec["${name}-config-dbuser"],
+                    Exec["${name}-config-dbpass"]
+        ]
     }
 
     $schema = "${name}_db"
