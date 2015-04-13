@@ -73,6 +73,15 @@ define dvwa::user {
         require => Exec["$name-unzip-dvwa"],
     }
 
+    # Set DVWA security level
+    exec {"${name}-config-seclevel":
+        command => "sed -i\'\' \'s/\"high\"/\"low\"/\' $dvwa_config",
+        path    => '/bin',
+        onlyif  => "grep \"high\" $dvwa_config",
+        notify  => Service['apache2'],
+        require => Exec["$name-unzip-dvwa"],
+    }
+
     # Run the DVWA Database Setup script
     $setup_output = "/tmp/setup_${name}.txt"
     exec {"${name}-setup-dvwa-db":
