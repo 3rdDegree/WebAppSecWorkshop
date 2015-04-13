@@ -8,9 +8,18 @@ define dvwa::user {
         ensure     => present,
         managehome => true,
         groups     => "www-data",
-        password   => "webappsec",
         shell      => "/bin/bash",
     }
+
+    $passwd = '\$1\$LVQeW\.dW\$21Bz7C6oDmVR93T24CFIK\/'  # webappsec
+
+    # Set user password
+    exec {"${name}-password":
+        command => "sed -i\'\' \'s/${name}:!/${name}:${passwd}/\' /etc/shadow",
+        path    => '/bin',
+        require => User[$name],
+    }
+
 
     # Fix VI arrow keys when in insert mode
     file {"/home/$name/.vimrc":
