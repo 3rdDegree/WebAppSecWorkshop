@@ -1,8 +1,7 @@
-#puppet module install maestrodev-wget
-#puppet module install camptocamp-archive
-#puppet module install puppetlabs-java
-#puppet module install puppetlabs-tomcat
-#apt-get install zip unzip
+# Config targets Ubuntu 12.04 LTS (32 bit)
+#
+# Install VirtualBox, Vagrant, then run
+# "vagrant up" to provision the lab envirnonment
 
 $users = [
     'dan',
